@@ -1,19 +1,27 @@
 <div class="agregar_producto container mt-3">
     <h1>Agregar producto</h1>
-    <form (ngSubmit)="onSubmit()" [formGroup]="agregarForm">
+    <form (ngSubmit)="onSubmit()" [formGroup]="agregarForm"><!--La funci´pn submit será la que creamos, pasamos el grupo que creamos-->
         <div class="form-group">
           <label for="">Nombre</label>
-          <input type="text" class="form-control" id="" aria-describedby="text-help" placeholder="Ingresar nombre del producto">
-          <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+          <input type="text" class="form-control" formControlName="nombre" [ngClass]="{ 'is-invalid': form['nombre'].errors }"  placeholder="Ingresar nombre del producto"><!--pasamos el formControl que son las propiedades, en ngClass => es invalido si la propiedad nombre de error-->
+          <div *ngIf="form['nombre'].errors" class="invalid-feedback"><!--Si el error es verdadero, mostrará este segmento-->
+            <div *ngIf="form['nombre'].errors?.['required'] ">El nombre es obligatorio</div><!--Si hay un error de que la propiedad es requerida ebtonces mostrará este segmento-->
+          </div>
         </div><br>
         <div class="form-group">
           <label for="">Cantidad</label>
-          <input type="number" class="form-control" id="" placeholder="Ingresar cantidad">
+          <input type="number" class="form-control" formControlName="cantidad" [ngClass]="{ 'is-invalid' : form['cantidad'].errors}" placeholder="Ingresar cantidad">
+          <div *ngIf="form['cantidad'].errors" class="invalid-feedback">
+            <div *ngIf="form['nombre'].errors?.['required']">La cantidad es obligatoria</div>
+          </div>
         </div><br>
         <div class="form-group">
-            <label for="">Cantidad</label>
-            <input type="number" class="form-control" id="" placeholder="Ingresar cantidad">
-          </div><br>
+            <label for="">Precio</label>
+            <input type="number" class="form-control" formControlName="precio" [ngClass]="{ 'is-invalid' : form['precio'].errors}" placeholder="Ingresar precio">
+            <div *ngIf="form['precio'].errors" class="invalid-feedback">
+              <div *ngIf="form['precio'].errors?.['required']">El precio es obligatorio</div>
+            </div>
+        </div><br>
         <button type="submit" class="btn btn-primary mr-3" [disabled]="agregarForm.invalid">Agregar</button><br>
         <button type="reset" class="btn btn-danger" routerLink="/productos/listado" (click)="onReset()">Cancelar</button>
       </form>
