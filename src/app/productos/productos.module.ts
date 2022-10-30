@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ProductosRoutingModule } from './productos-routing.module';
 import { ListadoComponent } from './pages/listado/components/listado/listado.component';
 import { AgregarComponent } from './pages/agregar/components/agregar/agregar.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -13,7 +15,13 @@ import { AgregarComponent } from './pages/agregar/components/agregar/agregar.com
   ],
   imports: [
     CommonModule,
-    ProductosRoutingModule
+    ProductosRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  exports: [
+    ListadoComponent,
+    AgregarComponent
   ]
 })
 export class ProductosModule { }

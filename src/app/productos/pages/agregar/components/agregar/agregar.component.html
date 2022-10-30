@@ -1,20 +1,20 @@
 <div class="agregar_producto container mt-3">
     <h1>Agregar producto</h1>
-    <form>
+    <form (ngSubmit)="onSubmit()" [formGroup]="agregarForm">
         <div class="form-group">
-          <label for="exampleInputEmail1">Nombre</label>
-          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="text-help" placeholder="Ingresar nombre del producto">
+          <label for="">Nombre</label>
+          <input type="text" class="form-control" id="" aria-describedby="text-help" placeholder="Ingresar nombre del producto">
           <!--<small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
         </div><br>
         <div class="form-group">
-          <label for="exampleInputPassword1">Cantidad</label>
-          <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Ingresar cantidad">
+          <label for="">Cantidad</label>
+          <input type="number" class="form-control" id="" placeholder="Ingresar cantidad">
         </div><br>
         <div class="form-group">
-            <label for="exampleInputPassword1">Cantidad</label>
-            <input type="number" class="form-control" id="exampleInputPassword1" placeholder="Ingresar cantidad">
+            <label for="">Cantidad</label>
+            <input type="number" class="form-control" id="" placeholder="Ingresar cantidad">
           </div><br>
-        <button type="submit" class="btn btn-primary mr-3">Agregar</button><br>
-        <button type="submit" class="btn btn-danger">Cancelar</button>
+        <button type="submit" class="btn btn-primary mr-3" [disabled]="agregarForm.invalid">Agregar</button><br>
+        <button type="reset" class="btn btn-danger" routerLink="/productos/listado" (click)="onReset()">Cancelar</button>
       </form>
 </div>
