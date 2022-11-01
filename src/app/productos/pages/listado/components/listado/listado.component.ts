@@ -12,16 +12,11 @@ export class ListadoComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllProductos();
-  }
+  };
 
   getAllProductos(){
     this.productosService.getProductosApi().subscribe(data => {
-      this.productosService.DATA_SOURCE = data;
+      this.productosService.DATA_SOURCE = data;console.log(typeof data)
     })
   };
-
-  createProducto(){
-    
-  };
-
 }
