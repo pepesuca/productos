@@ -7,7 +7,8 @@ const routes: Routes = [
   {
     path: '', children: [
       {path: 'listado', component: ListadoComponent},
-      {path: 'agregar', component: AgregarComponent}
+      {path: 'listado/:accion/:id', component: AgregarComponent},
+      //{path: 'editar/:id', component: AgregarComponent}
     ]
   }
 ];

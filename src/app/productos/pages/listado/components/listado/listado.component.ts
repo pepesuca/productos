@@ -16,7 +16,15 @@ export class ListadoComponent implements OnInit {
 
   getAllProductos(){
     this.productosService.getProductosApi().subscribe(data => {
-      this.productosService.DATA_SOURCE = data;console.log(typeof data)
+      this.productosService.DATA_SOURCE = data;//console.log( data)
     })
   };
+
+  getOneProducto(id_producto:any){
+    this.productosService.getOneProductoApi(id_producto).subscribe(data => {
+      this.productosService.productoEditar = data
+      console.log(this.productosService.productoEditar)
+      }
+    );
+  }
 }

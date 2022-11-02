@@ -16,9 +16,9 @@
         <td>{{producto.nombre_producto}}</td>
         <td>{{producto.cantidad_producto}}</td>
         <td>{{producto.precio_producto | currency}}</td>
-        <td><button class="btn btn-primary">Editar</button><button class="btn btn-danger">Eliminar</button></td>
+        <td><button class="btn btn-primary" routerLink="/productos/listado/editar/{{producto.id_producto}}" (click)="getOneProducto(producto.id_producto)">Editar</button><button class="btn btn-danger">Eliminar</button></td>
       </tr>
     </tbody>
 </table>
-<button class="agregar btn btn-primary" routerLink="/productos/agregar">Agregar</button>
+<button class="agregar btn btn-primary" routerLink="/productos/listado/agregar/undefined">Agregar</button>
 </div>

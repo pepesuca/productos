@@ -1,5 +1,6 @@
 <div class="agregar_producto container mt-3">
-    <h1>Agregar producto</h1>
+    <h1 *ngIf="titleAgregar">Agregar producto</h1>
+    <h1 *ngIf="titleEditar">Editar producto</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="agregarForm"><!--La funci´pn submit será la que creamos, pasamos el grupo que creamos-->
         <div class="form-group">
           <label for="">Nombre</label>
@@ -22,7 +23,8 @@
               <div *ngIf="form['precio_producto'].errors?.['required']">El precio es obligatorio</div>
             </div>
         </div><br>
-        <button type="submit" class="btn btn-primary mr-3" [disabled]="agregarForm.invalid">Agregar</button><br>
+        <button type="submit" *ngIf="botonAgregar" class="btn btn-primary mr-3" [disabled]="agregarForm.invalid">Agregar</button>
+        <button *ngIf="botonEditar" type="submit" class="btn btn-primary mr-3" [disabled]="agregarForm.invalid">Editar</button>
         <button type="reset" class="btn btn-danger" routerLink="/productos/listado" (click)="onReset()">Cancelar</button>
       </form>
 </div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
+import { ActivatedRoute, Router } from '@angular/router';
+import { Producto } from 'src/app/productos/models/productos';
 import { ProductosService } from 'src/app/productos/services/productos.service';
 
 @Component({
@@ -13,24 +15,51 @@ export class AgregarComponent implements OnInit {
   public agregarForm: FormGroup;
   // creamos otra variable la cual nos dirá si el envío se da o no
   public submitted = false;
+  // creamos una variable que nos permitirá esocnder o ocultar el titulo de editar
+  public titleEditar = false;
+  public titleAgregar = true;
+  // creamos otra la cual haga lo mismo pero para el botón
+  public botonEditar = false;
+  public botonAgregar = true;
+  private accion = this.activatedRouter.snapshot.params['accion'];
 
-  constructor(private formBuilder: FormBuilder, private productoService: ProductosService) { }
+
   // creamos una variable de tipo formbuilder
+  constructor(private formBuilder: FormBuilder, private productoService: ProductosService, private activatedRouter: ActivatedRoute) { 
+    const id_producto = this.activatedRouter.snapshot.params['id'];
+    if(this.accion === 'editar'){
+      if(id_producto !== undefined){
+        this.titleEditar = true;
+        this.titleAgregar = false;
+        this.botonEditar = true;
+        this.botonAgregar = false;
+     
+      };  
+    }
+    
+  }
 
   ngOnInit(): void {
+    
     this.agregarForm = this.formBuilder.group(
       // creamos un grupo el cuál tendrá propiedades (tendrá algun valor por defecto y serán requeridos osea obligatorios)
       { 
-        //id_producto: [""],
-        nombre_producto: ["", Validators.required ],
-        cantidad_producto: ["", [Validators.required, Validators.pattern("^[0-9]*$")]],
-        precio_producto: ["", Validators.required]
+        id_producto: [this.productoService.productoEditar.id_producto],
+        nombre_producto: [this.productoService.productoEditar.nombre_producto, Validators.required ],
+        cantidad_producto: [this.productoService.productoEditar.cantidad_producto, [Validators.required, Validators.pattern("^[0-9]*$")]],
+        precio_producto: [this.productoService.productoEditar.precio_producto, Validators.required]
       },
       {
         //para validar algun otro punto
       }
-    )
+    );
+
+    if(this.accion === 'agregar'){
+      this.agregarForm.reset();
+    }
   };
+
+  
 
   // un getter el cual nos ayudará a acceder a una variable mas facilmente
   get form(){
@@ -65,5 +94,7 @@ export class AgregarComponent implements OnInit {
     this.submitted = false;
     // reseteamos todo los valores que tenga el formulario
     this.agregarForm.reset();
+
+    //this.productoService.productoEditar = {};
   }; 
 };
