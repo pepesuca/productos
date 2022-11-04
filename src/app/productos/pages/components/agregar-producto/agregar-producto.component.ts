@@ -5,11 +5,11 @@ import { Producto } from 'src/app/productos/models/productos';
 import { ProductosService } from 'src/app/productos/services/productos.service';
 
 @Component({
-  selector: 'app-agregar',
-  templateUrl: './agregar.component.html',
-  styleUrls: ['./agregar.component.css']
+  selector: 'app-agregar-producto',
+  templateUrl: './agregar-producto.component.html',
+  styleUrls: ['./agregar-producto.component.css']
 })
-export class AgregarComponent implements OnInit {
+export class AgregarProductoComponent implements OnInit {
 
   // creamos una variable la cual será de tipo FormGroup
   public agregarForm: FormGroup;
@@ -22,44 +22,46 @@ export class AgregarComponent implements OnInit {
   public botonEditar = false;
   public botonAgregar = true;
   private accion = this.activatedRouter.snapshot.params['accion'];
+  public mostrarForm: boolean = false;
 
-
-  // creamos una variable de tipo formbuilder
   constructor(private formBuilder: FormBuilder, private productoService: ProductosService, private activatedRouter: ActivatedRoute) { 
-    const id_producto = this.activatedRouter.snapshot.params['id'];
-    if(this.accion === 'editar'){
-      if(id_producto !== undefined){
-        this.titleEditar = true;
-        this.titleAgregar = false;
-        this.botonEditar = true;
-        this.botonAgregar = false;
-     
-      };  
-    }
     
   }
 
   ngOnInit(): void {
+    const id_producto = this.activatedRouter.snapshot.params['id'];
     
-    this.agregarForm = this.formBuilder.group(
-      // creamos un grupo el cuál tendrá propiedades (tendrá algun valor por defecto y serán requeridos osea obligatorios)
-      { 
-        id_producto: [this.productoService.productoEditar.id_producto],
-        nombre_producto: [this.productoService.productoEditar.nombre_producto, Validators.required ],
-        cantidad_producto: [this.productoService.productoEditar.cantidad_producto, [Validators.required, Validators.pattern("^[0-9]*$")]],
-        precio_producto: [this.productoService.productoEditar.precio_producto, Validators.required]
-      },
-      {
-        //para validar algun otro punto
-      }
-    );
 
-    if(this.accion === 'agregar'){
-      this.agregarForm.reset();
+    if(this.accion === 'editar'){
+      this.titleEditar = true;
+      this.titleAgregar = false;
+      this.botonEditar = true;
+      this.botonAgregar = false;
     }
-  };
 
-  
+    this.productoService.getOneProductoApi(id_producto).subscribe(data => {
+      if(data !== null){
+        this.productoService.productoEditar = data
+      };
+      
+      this.agregarForm = this.formBuilder.group(
+        // creamos un grupo el cuál tendrá propiedades (tendrá algun valor por defecto y serán requeridos osea obligatorios)
+        { 
+          id_producto: [this.productoService.productoEditar.id_producto || ''],
+          nombre_producto: [this.productoService.productoEditar.nombre_producto || '', Validators.required ],
+          cantidad_producto: [this.productoService.productoEditar.cantidad_producto || '', [Validators.required, Validators.pattern("^[0-9]*$")]],
+          precio_producto: [this.productoService.productoEditar.precio_producto || '', Validators.required]
+        },
+        {
+          //para validar algun otro punto
+        }
+      );
+      this.mostrarForm = true
+    }
+      
+  );
+    
+  };
 
   // un getter el cual nos ayudará a acceder a una variable mas facilmente
   get form(){
@@ -76,11 +78,17 @@ export class AgregarComponent implements OnInit {
     };
 
     // Llamamos a nuestra variable de servicio y le pasamos como parametros los valores del formulario
+    const dataFormPost: Producto = {
+      id_producto: this.agregarForm.value.id_producto,
+      nombre_producto: this.agregarForm.value.nombre_producto.toUpperCase(),
+      cantidad_producto: this.agregarForm.value.cantidad_producto,
+      precio_producto: this.agregarForm.value.precio_producto
+    };
     // La data que devuelve es un objeto
-    this.productoService.postProductosApi(this.agregarForm.value).subscribe(data => {
+    this.productoService.postProductosApi(dataFormPost).subscribe(data => {
       // Recorremos el objeto, creando dos variables (clave y valor) y con Object.entries() pasamos como parámetro el objeto.
       for(const [c, v] of Object.entries(data)){
-        if(v === "Ya existe el producto"){
+        if(v === null){
           alert("Ya existe el producto");
         }else {
           alert("Producto agregado correctamente");
@@ -97,4 +105,5 @@ export class AgregarComponent implements OnInit {
 
     //this.productoService.productoEditar = {};
   }; 
-};
+
+}

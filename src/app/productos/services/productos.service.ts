@@ -10,7 +10,12 @@ export class ProductosService {
 
   private URL_API = 'http://127.0.0.1:4000/api/productos';
   public DATA_SOURCE:Producto[] = [];
-  public productoEditar:Producto = {};
+  public productoEditar:Producto = {
+    id_producto: 0,
+    nombre_producto: '',
+    cantidad_producto: 0,
+    precio_producto: 0
+  };
 
 
   constructor(private http: HttpClient) { }
@@ -25,6 +30,10 @@ export class ProductosService {
 
   getOneProductoApi(id_producto:any):Observable<Producto>{
     return this.http.get<Producto>(this.URL_API + "/" + id_producto);
+  };
+
+  putOneProductoApi(id_producto:any, data:Producto){
+    return this.http.put(this.URL_API + "/" + id_producto, data);
   }
 
 };

@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AgregarComponent } from './pages/agregar/components/agregar/agregar.component';
-import { ListadoComponent } from './pages/listado/components/listado/listado.component';
+import { EditarProductoComponent } from './pages/components/editar-producto/editar-producto.component';
+
+import { AgregarProductoComponent } from './pages/components/agregar-producto/agregar-producto.component';
+import { ListadoComponent } from './pages/components/listado/listado.component';
 
 const routes: Routes = [
-  {
-    path: '', children: [
       {path: 'listado', component: ListadoComponent},
-      {path: 'listado/:accion/:id', component: AgregarComponent},
+      {path: 'agregar', component: AgregarProductoComponent},
+      {path: 'editar', component: EditarProductoComponent},
       //{path: 'editar/:id', component: AgregarComponent}
-    ]
-  }
 ];
 
 @NgModule({

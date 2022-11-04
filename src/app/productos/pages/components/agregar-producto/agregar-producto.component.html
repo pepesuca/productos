@@ -1,4 +1,4 @@
-<div class="agregar_producto container mt-3">
+<div class="agregar_producto container mt-3" *ngIf="mostrarForm">
     <h1 *ngIf="titleAgregar">Agregar producto</h1>
     <h1 *ngIf="titleEditar">Editar producto</h1>
     <form (ngSubmit)="onSubmit()" [formGroup]="agregarForm"><!--La funci´pn submit será la que creamos, pasamos el grupo que creamos-->

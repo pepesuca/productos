@@ -13,12 +13,12 @@
     <tbody>
       <tr *ngFor="let producto of productosService.DATA_SOURCE; let i = index">
         <th scope="row">{{i+1}}</th>
-        <td>{{producto.nombre_producto}}</td>
+        <td>{{producto.nombre_producto | capitalizeName}}</td>
         <td>{{producto.cantidad_producto}}</td>
         <td>{{producto.precio_producto | currency}}</td>
-        <td><button class="btn btn-primary" routerLink="/productos/listado/editar/{{producto.id_producto}}" (click)="getOneProducto(producto.id_producto)">Editar</button><button class="btn btn-danger">Eliminar</button></td>
+        <td><button class="btn btn-primary" (click)="ngEditarProducto(producto.id_producto)" >Editar</button><button class="btn btn-danger">Eliminar</button></td>
       </tr>
     </tbody>
 </table>
-<button class="agregar btn btn-primary" routerLink="/productos/listado/agregar/undefined">Agregar</button>
+<button class="agregar btn btn-primary" (click)="ngAgregarProducto()">Agregar</button>
 </div>

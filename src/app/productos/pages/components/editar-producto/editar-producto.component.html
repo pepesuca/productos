@@ -1,0 +1,19 @@
+<div class="agregar_producto container mt-3" *ngIf="isLoadForm">
+    <h1>Editar producto</h1>
+    <form (ngSubmit)="onSubmit()" [formGroup]="editarForm"><!--La funci´pn submit será la que creamos, pasamos el grupo que creamos-->
+        <div class="form-group">
+          <label for="">Nombre</label>
+          <input type="text" class="form-control" formControlName="nombre_producto" placeholder="Ingresar nombre del producto"><!--pasamos el formControl que son las propiedades, en ngClass => es invalido si la propiedad nombre de error-->
+        </div><br>
+        <div class="form-group">
+          <label for="">Cantidad</label>
+          <input type="number" class="form-control" formControlName="cantidad_producto" placeholder="Ingresar cantidad">
+        </div><br>
+        <div class="form-group">
+            <label for="">Precio</label>
+            <input type="number" class="form-control" formControlName="precio_producto" placeholder="Ingresar precio">
+        </div><br>
+        <button type="submit" class="btn btn-primary mr-3" [disabled]="editarForm.invalid">Guardar</button>
+        <button type="reset" class="btn btn-danger" routerLink="/productos/listado" >Cancelar</button>
+      </form>
+</div>
