@@ -8,7 +8,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditarProductoComponent } from './pages/components/editar-producto/editar-producto.component';
 import { AgregarProductoComponent } from './pages/components/agregar-producto/agregar-producto.component';
 import { PipeProductoListadoPipe } from './pages/pipes/pipe-producto-listado.pipe';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
+import {MatCardModule} from '@angular/material/card';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
@@ -22,7 +27,12 @@ import { PipeProductoListadoPipe } from './pages/pipes/pipe-producto-listado.pip
     CommonModule,
     ProductosRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxSpinnerModule,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTableModule
   ],
   exports: [
     ListadoComponent,

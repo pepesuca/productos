@@ -30,7 +30,9 @@ export class EditarProductoComponent implements OnInit {
   }
     
   ngObtenerProducto() {
+    // no permitimos que el formulario se cargue
     this.isLoadForm = false;
+    // recuperamos el parámetro
     const id_producto = this._activatedRouter.snapshot.queryParams['id_producto'];
     this._productoService.getOneProductoApi(id_producto).subscribe(response => {
       if(response !== null) {
@@ -43,6 +45,7 @@ export class EditarProductoComponent implements OnInit {
             precio_producto: [response.precio_producto || '', Validators.required]
           }
         );
+        // una vez la data sea recuperad, mostraremos el formulatio
         this.isLoadForm = true;
       }
     }, error => {console.log(error)});
@@ -65,7 +68,6 @@ export class EditarProductoComponent implements OnInit {
         precio_producto: this.editarForm.value.precio_producto
       };
 
-      console.log(dataFormPut.nombre_producto)
       // La data que devuelve es un objeto
       this._productoService.putOneProductoApi(dataFormPut.id_producto,dataFormPut).subscribe(data => {
         // Recorremos el objeto, creando dos variables (clave y valor) y con Object.entries() pasamos como parámetro el objeto.

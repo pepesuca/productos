@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router';
 import { Producto } from 'src/app/productos/models/productos';
 import { ProductosService } from 'src/app/productos/services/productos.service';
+import { GeneralService } from 'src/app/shared/services/general.service';
 
 @Component({
   selector: 'app-agregar-producto',
@@ -24,7 +25,14 @@ export class AgregarProductoComponent implements OnInit {
   private accion = this.activatedRouter.snapshot.params['accion'];
   public mostrarForm: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private productoService: ProductosService, private activatedRouter: ActivatedRoute) { 
+  //manten un orden en el codigo
+  constructor(
+    private _generalService: GeneralService,
+    private formBuilder: FormBuilder, 
+    private productoService: ProductosService, 
+    private activatedRouter: ActivatedRoute,
+    private _router: Router
+    ) { 
     
   }
 
@@ -38,8 +46,9 @@ export class AgregarProductoComponent implements OnInit {
       this.botonEditar = true;
       this.botonAgregar = false;
     }
-
+    this._generalService.ngMostrarSpinner();
     this.productoService.getOneProductoApi(id_producto).subscribe(data => {
+      this._generalService.ngOcultarpinner();
       if(data !== null){
         this.productoService.productoEditar = data
       };
@@ -84,18 +93,31 @@ export class AgregarProductoComponent implements OnInit {
       cantidad_producto: this.agregarForm.value.cantidad_producto,
       precio_producto: this.agregarForm.value.precio_producto
     };
-    // La data que devuelve es un objeto
-    this.productoService.postProductosApi(dataFormPost).subscribe(data => {
-      // Recorremos el objeto, creando dos variables (clave y valor) y con Object.entries() pasamos como parámetro el objeto.
-      for(const [c, v] of Object.entries(data)){
-        if(v === null){
-          alert("Ya existe el producto");
-        }else {
-          alert("Producto agregado correctamente");
+
+    this._generalService.mensajeConfirmacion('¿Esta seguro de guardar el producto?', () => {
+      this._generalService.ngMostrarSpinner();
+      // La data que devuelve es un objeto
+      this.productoService.postProductosApi(dataFormPost).subscribe(data => {
+        this._generalService.ngOcultarpinner();
+        // Recorremos el objeto, creando dos variables (clave y valor) y con Object.entries() pasamos como parámetro el objeto.
+        for(const [c, v] of Object.entries(data)){
+          if(v === null){
+            this._generalService.mensajeTemporalAdvertencia("Ya existe el producto");
+          }else {
+            this._generalService.mensajeCorrecto("Producto agregado correctamente", () => {
+              this._generalService.mensajeConfirmacionPermanecerPagina(() => {
+                this.ngSalir();
+              });
+            });
+          };
         };
-      };
-    });
+      });
+    })
   };
+  
+  ngSalir() {
+    this._router.navigate(['/productos/listado']);
+  }
 
   onReset(){
     // deshabilitamos el envío 

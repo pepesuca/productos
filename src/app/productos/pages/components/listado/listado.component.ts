@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductosService } from 'src/app/productos/services/productos.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { GeneralService } from 'src/app/shared/services/general.service';
 
 @Component({
   selector: 'app-listado',
@@ -9,9 +11,13 @@ import { ProductosService } from 'src/app/productos/services/productos.service';
 })
 export class ListadoComponent implements OnInit {
 
+  typeSelected: string;
+
   constructor(
+    private _generalService: GeneralService,
     public productosService: ProductosService,
-    private _router: Router
+    private _router: Router,
+    private spinnerService: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -19,8 +25,10 @@ export class ListadoComponent implements OnInit {
   };
 
   getAllProductos(){
+    this._generalService.ngMostrarSpinner();
     this.productosService.getProductosApi().subscribe(data => {
       this.productosService.DATA_SOURCE = data;//console.log( data)
+      this._generalService.ngOcultarpinner();
     })
   };
 
@@ -41,6 +49,17 @@ export class ListadoComponent implements OnInit {
         }
       }
     );
-  }
+  };
 
-}
+  ngEliminarProducto(id_producto: any):void{
+    //inicias el spinner
+    this._generalService.ngMostrarSpinner();
+    this.productosService.deleteProductoApi(id_producto).subscribe(response => {
+      alert("Producro Eliminado");
+      this._generalService.ngOcultarpinner();
+      //aqui recien cuando responde se oculta, el tiempo que demore
+      this.getAllProductos();
+    });
+  };
+
+};

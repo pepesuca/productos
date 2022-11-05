@@ -34,6 +34,10 @@ export class ProductosService {
 
   putOneProductoApi(id_producto:any, data:Producto){
     return this.http.put(this.URL_API + "/" + id_producto, data);
-  }
+  };
+
+  deleteProductoApi(id_producto:any){
+    return this.http.delete(this.URL_API+ "/" + id_producto);
+  };
 
 };
