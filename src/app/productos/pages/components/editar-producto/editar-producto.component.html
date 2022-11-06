@@ -1,19 +1,47 @@
-<div class="agregar_producto container mt-3" *ngIf="isLoadForm">
-    <h1>Editar producto</h1>
-    <form (ngSubmit)="onSubmit()" [formGroup]="editarForm"><!--La funci´pn submit será la que creamos, pasamos el grupo que creamos-->
-        <div class="form-group">
-          <label for="">Nombre</label>
-          <input type="text" class="form-control" formControlName="nombre_producto" placeholder="Ingresar nombre del producto"><!--pasamos el formControl que son las propiedades, en ngClass => es invalido si la propiedad nombre de error-->
-        </div><br>
-        <div class="form-group">
-          <label for="">Cantidad</label>
-          <input type="number" class="form-control" formControlName="cantidad_producto" placeholder="Ingresar cantidad">
-        </div><br>
-        <div class="form-group">
-            <label for="">Precio</label>
-            <input type="number" class="form-control" formControlName="precio_producto" placeholder="Ingresar precio">
-        </div><br>
-        <button type="submit" class="btn btn-primary mr-3" [disabled]="editarForm.invalid">Guardar</button>
-        <button type="reset" class="btn btn-danger" routerLink="/productos/listado" >Cancelar</button>
-      </form>
-</div>
+
+<mat-card>
+  <mat-card-title>Editar Producto</mat-card-title>
+  <!--<mat-card-subtitle align="end">Productos/Nuevo Producto</mat-card-subtitle>-->
+  <hr>
+  <mat-card-content>
+    <div align="end"> 
+      <button (click)="ngSalir()" name="Regresar" mat-icon-button id="salirListado">
+        <mat-icon>keyboard_return</mat-icon>
+      </button>
+    </div>
+    <form [formGroup]="editarForm"><!--La funci´pn submit será la que creamos, pasamos el grupo que creamos-->
+      <mat-form-field>
+        <mat-label for="">Nombre</mat-label>
+        <input matInput type="text"  formControlName="nombre_producto" [ngClass]="{ 'is-invalid': form['nombre_producto'].errors }"  placeholder="Ingresar nombre del producto"><!--pasamos el formControl que son las propiedades, en ngClass => es invalido si la propiedad nombre de error-->
+        <div *ngIf="form['nombre_producto'].errors" class="invalid-feedback"><!--Si el error es verdadero, mostrará este segmento-->
+          <div *ngIf="form['nombre_producto'].errors?.['required'] ">El nombre es obligatorio</div><!--Si hay un error de que la propiedad es requerida ebtonces mostrará este segmento-->
+        </div>
+      </mat-form-field>
+        
+      <br>
+      <mat-form-field>
+        <mat-label for="">Cantidad</mat-label>
+        <input matInput type="number"  formControlName="cantidad_producto" [ngClass]="{ 'is-invalid' : form['cantidad_producto'].errors}" placeholder="Ingresar cantidad">
+        <div *ngIf="form['cantidad_producto'].errors" class="invalid-feedback">
+          <div *ngIf="form['cantidad_producto'].errors?.['required']">La cantidad es obligatoria</div>
+        </div>
+      </mat-form-field>
+        
+      <br>
+      <mat-form-field>
+          <mat-label for="">Precio</mat-label>
+          <input matInput type="number"  formControlName="precio_producto" [ngClass]="{ 'is-invalid' : form['precio_producto'].errors}" placeholder="Ingresar precio">
+          <div *ngIf="form['precio_producto'].errors" class="invalid-feedback">
+            <div *ngIf="form['precio_producto'].errors?.['required']">El precio es obligatorio</div>
+          </div>
+      </mat-form-field>
+        
+      <br>
+    </form>
+  </mat-card-content>
+  <hr>
+  <mat-card-actions align="end">
+    <button type="submit"  mat-raised-button color="primary"  (click)="onSubmit()"  [disabled]="editarForm.invalid">Guardar</button>
+    <button type="reset" mat-raised-button color="accent" (click)="onReset()">Limpiar</button>
+  </mat-card-actions>
+</mat-card>

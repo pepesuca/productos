@@ -1,28 +1,23 @@
-.agregar {
-    width: auto !important;
-}
-
 button {
     width: auto;
 }
 
-#create {
-    color: black;
-    margin-right: 1px;
-    
-    margin-right: 8px;
+#agregar {
+    margin-left: 9px;
 }
+
 
 #delete {
-    color: red;
+    color: white;
+    background-color: red;
 }
 
-mat-card-actions{
-    margin-left: 1px;
+
+table {
+    width: 100%;
 }
 
-mat-icon:hover {
-    background-color: rgb(117, 104, 104);
-    border-radius: 10%;
+th {
+    font-weight: bold;
 }
 

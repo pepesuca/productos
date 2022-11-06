@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Producto } from '../../../models/productos';
 import { ProductosService } from '../../../services/productos.service';
 
@@ -20,7 +20,8 @@ export class EditarProductoComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder, 
     private _productoService: ProductosService, 
-    private _activatedRouter: ActivatedRoute
+    private _activatedRouter: ActivatedRoute,
+    private _router: Router,
   ) { 
     
   }
@@ -34,15 +35,21 @@ export class EditarProductoComponent implements OnInit {
     this.isLoadForm = false;
     // recuperamos el parámetro
     const id_producto = this._activatedRouter.snapshot.queryParams['id_producto'];
-    this._productoService.getOneProductoApi(id_producto).subscribe(response => {
-      if(response !== null) {
+    this._productoService.getOneProductoApi(id_producto).subscribe(data => {
+      if(data !== null) {
+        const dataFormPost: Producto = {
+          id_producto: data.id_producto,
+          nombre_producto: data.nombre_producto,
+          cantidad_producto: data.cantidad_producto,
+          precio_producto: data.precio_producto
+        };
         this.editarForm = this._formBuilder.group(
           // creamos un grupo el cuál tendrá propiedades (tendrá algun valor por defecto y serán requeridos osea obligatorios)
           { 
-            id_producto: [response.id_producto || ''],
-            nombre_producto: [response.nombre_producto || '', Validators.required ],
-            cantidad_producto: [response.cantidad_producto || '', [Validators.required, Validators.pattern("^[0-9]*$")]],
-            precio_producto: [response.precio_producto || '', Validators.required]
+            id_producto: [dataFormPost.id_producto],
+            nombre_producto: [this.capitalizarPalabras(dataFormPost.nombre_producto), Validators.required ],
+            cantidad_producto: [dataFormPost.cantidad_producto, [Validators.required, Validators.pattern("^[0-9]*$")]],
+            precio_producto: [dataFormPost.precio_producto, Validators.required]
           }
         );
         // una vez la data sea recuperad, mostraremos el formulatio
@@ -79,6 +86,28 @@ export class EditarProductoComponent implements OnInit {
           }
         }
       );
-    }
+    }    
   }
+
+  get form(){
+    return this.editarForm.controls;
+  };
+
+  ngSalir() {
+    this._router.navigate(['/productos/listado']);
+  }
+
+  onReset(){
+    // deshabilitamos el envío 
+    this.submitted = false;
+    // reseteamos todo los valores que tenga el formulario
+    this.editarForm.reset();
+
+    //this.productoService.productoEditar = {};
+  }; 
+
+  capitalizarPalabras(text: any){
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
+  }
+
 }

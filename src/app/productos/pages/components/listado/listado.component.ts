@@ -12,6 +12,7 @@ import { GeneralService } from 'src/app/shared/services/general.service';
 export class ListadoComponent implements OnInit {
 
   typeSelected: string;
+  columnsTable: string[] = ['position', 'nombre_producto', 'cantidad_producto', 'precio_producto', 'opcion'];
 
   constructor(
     private _generalService: GeneralService,
@@ -24,10 +25,14 @@ export class ListadoComponent implements OnInit {
     this.getAllProductos();
   };
 
+
   getAllProductos(){
     this._generalService.ngMostrarSpinner();
     this.productosService.getProductosApi().subscribe(data => {
-      this.productosService.DATA_SOURCE = data;//console.log( data)
+      this.productosService.DATA_SOURCE = data;
+      for(let i of this.productosService.DATA_SOURCE){
+        i.position = this.productosService.DATA_SOURCE.indexOf(i)
+      }
       this._generalService.ngOcultarpinner();
     })
   };
@@ -53,13 +58,20 @@ export class ListadoComponent implements OnInit {
 
   ngEliminarProducto(id_producto: any):void{
     //inicias el spinner
-    this._generalService.ngMostrarSpinner();
-    this.productosService.deleteProductoApi(id_producto).subscribe(response => {
-      alert("Producro Eliminado");
-      this._generalService.ngOcultarpinner();
-      //aqui recien cuando responde se oculta, el tiempo que demore
-      this.getAllProductos();
-    });
+
+    this._generalService.mensajeConfirmacion('¿Esta seguro de guardar el producto?', () => {
+      this._generalService.ngMostrarSpinner();
+      // La data que devuelve es un objeto
+      this.productosService.deleteProductoApi(id_producto).subscribe(data => {
+        this._generalService.ngOcultarpinner();  
+        this.getAllProductos();
+        this._generalService.mensajeTemporalCorrecto(`Eliminado correctamente`);
+        
+      });
+    })
+
   };
+
+  
 
 };

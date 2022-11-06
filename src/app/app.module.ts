@@ -20,7 +20,8 @@ import { NgxSpinnerModule } from "ngx-spinner";
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

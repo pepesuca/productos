@@ -22,7 +22,6 @@ export class AgregarProductoComponent implements OnInit {
   // creamos otra la cual haga lo mismo pero para el botón
   public botonEditar = false;
   public botonAgregar = true;
-  private accion = this.activatedRouter.snapshot.params['accion'];
   public mostrarForm: boolean = false;
 
   //manten un orden en el codigo
@@ -37,38 +36,21 @@ export class AgregarProductoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const id_producto = this.activatedRouter.snapshot.params['id'];
-    
-
-    if(this.accion === 'editar'){
-      this.titleEditar = true;
-      this.titleAgregar = false;
-      this.botonEditar = true;
-      this.botonAgregar = false;
-    }
-    this._generalService.ngMostrarSpinner();
-    this.productoService.getOneProductoApi(id_producto).subscribe(data => {
-      this._generalService.ngOcultarpinner();
-      if(data !== null){
-        this.productoService.productoEditar = data
-      };
-      
-      this.agregarForm = this.formBuilder.group(
-        // creamos un grupo el cuál tendrá propiedades (tendrá algun valor por defecto y serán requeridos osea obligatorios)
-        { 
-          id_producto: [this.productoService.productoEditar.id_producto || ''],
-          nombre_producto: [this.productoService.productoEditar.nombre_producto || '', Validators.required ],
-          cantidad_producto: [this.productoService.productoEditar.cantidad_producto || '', [Validators.required, Validators.pattern("^[0-9]*$")]],
-          precio_producto: [this.productoService.productoEditar.precio_producto || '', Validators.required]
-        },
-        {
-          //para validar algun otro punto
-        }
-      );
-      this.mostrarForm = true
-    }
-      
-  );
+  
+    this.agregarForm = this.formBuilder.group(
+      // creamos un grupo el cuál tendrá propiedades (tendrá algun valor por defecto y serán requeridos osea obligatorios)
+      { 
+        id_producto: [this.productoService.productoEditar.id_producto || ''],
+        nombre_producto: [this.productoService.productoEditar.nombre_producto || '', Validators.required ],
+        cantidad_producto: [this.productoService.productoEditar.cantidad_producto || '', [Validators.required, Validators.pattern("^[0-9]*$")]],
+        precio_producto: [this.productoService.productoEditar.precio_producto || '', Validators.required]
+      },
+      {
+        //para validar algun otro punto
+      }
+    );
+    this.mostrarForm = true    
+  
     
   };
 
@@ -104,10 +86,10 @@ export class AgregarProductoComponent implements OnInit {
           if(v === null){
             this._generalService.mensajeTemporalAdvertencia("Ya existe el producto");
           }else {
-            this._generalService.mensajeCorrecto("Producto agregado correctamente", () => {
-              this._generalService.mensajeConfirmacionPermanecerPagina(() => {
-                this.ngSalir();
-              });
+            this._generalService.mensajeCorrecto("Producto agregado correctamente", ()=> {
+              this._generalService.mensajeConfirmacionPermanecerPagina(()=> {
+                this.onReset();
+              }, `¿Agregar nuevo producto?`);
             });
           };
         };
