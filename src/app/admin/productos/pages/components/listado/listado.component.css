@@ -1,0 +1,23 @@
+button {
+    width: auto;
+}
+
+#agregar {
+    margin-left: 9px;
+}
+
+
+#delete {
+    color: white;
+    background-color: red;
+}
+
+
+table {
+    width: 100%;
+}
+
+th {
+    font-weight: bold;
+}
+

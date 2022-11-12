@@ -1,0 +1,10 @@
+<div class="card-group">
+    <div class="card" *ngFor="let p of _productosService.DATA_SOURCE">
+      <!--<img class="card-img-top" src="..." alt="Card image cap">-->
+      <div class="card-body">
+        <h5 class="card-title">{{p.nombre_producto | capitalizeName}}</h5>
+        <input matInput type="number">
+        <p class="card-text"><small class="text-muted">{{p.precio_producto | currency : 'S/ ' : 'symbol'}}</small></p>
+      </div>
+    </div>
+</div>

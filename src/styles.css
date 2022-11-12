@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+
+.text-Spinner {
+    color: white;
+}
+
+mat-card {
+    margin: 55px;
+    border-radius: 15px !important;
+    background-color: rgb(244, 244, 244);
+    
+}
+
+mat-title {
+    font-weight: bold;
+}
+
+mat-card-actions{
+    margin-left: 1px;
+}
+
+.invalid-campo {
+    color: red;
+}
